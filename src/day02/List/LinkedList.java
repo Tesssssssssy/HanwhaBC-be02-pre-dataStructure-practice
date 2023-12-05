@@ -7,10 +7,10 @@ public class LinkedList {
         head = null;
     }
 
-    public void insertFirst(Integer input) {     // head의 앞 쪽에 새로운 노드 추가
-        Node newNode = new Node(input, null);               // 새로운 노드 생성
-        newNode.next = head;                     // 새로운 노드의 next가 기존 head를 가리키게 한다.
-        head = newNode;                          // head를 새로운 노드로 갱신.
+    public void insertFirst(Integer input) {                // head의 앞 쪽에 새로운 노드 추가
+        Node newNode = new Node(input, null);          // 새로운 노드 생성
+        newNode.next = head;                                // 새로운 노드의 next가 기존 head를 가리키게 한다.
+        head = newNode;                                     // head를 새로운 노드로 갱신.
     }
 
     public void removeFirst() {
@@ -23,12 +23,12 @@ public class LinkedList {
             temp = null;
 
         /*
+            <선생님 버전>
             Node temp = head.next;
             head.next = null;
             head = temp;
         */
         }
-
     }
 
     public void insertLast(Integer input) {
