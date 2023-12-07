@@ -2,14 +2,23 @@ package day02.Tree;
 
 public class BinarySearchTree {
     static final int COUNT = 10;
+    // TreePrinter에서 사용
     TreeNode root;
     // BinarySearchTree 클래스의 생성자에서 null로 초기화될 것.
 
+
+    /**
+     *  생성자 메소드
+     */
     public BinarySearchTree() {
         this.root = null;
         // 생성자를 통해 root를 null로 초기화
     }
 
+
+    /**
+     *  BinarySearchTree에서 노드를 추가하는 메소드
+     */
     public void add(Integer input) {
         TreeNode newTreeNode = new TreeNode(input);
         // 입력받은 input값을 TreeNode의 data에 저장한 새로운 TreeNode 객체 생성
@@ -59,6 +68,10 @@ public class BinarySearchTree {
         // 즉 root가 변하는 것이다.
     }
 
+
+    /**
+     *  BinarySearchTree에서 입력 노드를 찾는 메소드
+     */
     public void search(Integer input) {
         searchNode(root, input);
         // 입력값을 받아서 아래 searchNode 함수 호출
@@ -84,41 +97,184 @@ public class BinarySearchTree {
         return treeNode;
     }
 
-    public void descendingTraversal() {
-        //내림차순 순회
-        System.out.print("내림차순 순회: ");
-        rightInorderTraversal(root);
-        // 아래에 트리를 우측 중위 순회하는 rightInorderTraversal 함수 호출
 
+    /**
+     *  BinarySearchTree를 중위 순회하는 메소드
+     */
+    public void inOrder() {
+        // 중위 순회 (오름 차순)
+        System.out.print("중위 순회: ");
+        inOrderTraverse(root);
         System.out.println();
     }
 
-    private void rightInorderTraversal(TreeNode treeNode){
-        // 트리의 우측 중위 순회
+    private void inOrderTraverse(TreeNode treeNode) {
         if(treeNode == null)
             return;
-        rightInorderTraversal(treeNode.right);
+        inOrderTraverse(treeNode.left);
         System.out.printf("%d ", treeNode.data);
-        rightInorderTraversal(treeNode.left);
+        inOrderTraverse(treeNode.right);
     }
 
-    public void ascendingTraversal() {
-        //오름차순 순회
-        System.out.print("오름차순 순회: ");
-        leftInorderTraversal(root);
+
+    /**
+     *  BinarySearchTree를 전위 순회하는 메소드
+     */
+    public void preOrder() {
+        // 전위 순회
+        System.out.print("전위 순회: ");
+        preOrderTraverse(root);
         System.out.println();
     }
 
-    private void leftInorderTraversal(TreeNode treeNode) {
-        // 좌측 중위 순회
+    private void preOrderTraverse(TreeNode treeNode) {
         if(treeNode == null)
             return;
-        leftInorderTraversal(treeNode.left);
         System.out.printf("%d ", treeNode.data);
-        leftInorderTraversal(treeNode.right);
+        preOrderTraverse(treeNode.left);
+        preOrderTraverse(treeNode.right);
     }
 
-    // 트리를 확인할 수 있는 함수 (외부 코드 첨부)
+
+    /**
+     *  BinarySearchTree를 후위 순회하는 메소드
+     */
+    public void postOrder() {
+        // 후위 순회
+        System.out.print("후위 순회: ");
+        postOrderTraverse(root);
+        System.out.println();
+    }
+
+    private void postOrderTraverse(TreeNode treeNode) {
+        if(treeNode == null)
+            return;
+        postOrderTraverse(treeNode.left);
+        postOrderTraverse(treeNode.right);
+        System.out.printf("%d ", treeNode.data);
+    }
+
+
+    /**
+     *  BinarySearchTree에서 입력 노드를 삭제하는 메소드
+     */
+    public void remove(Integer input) {
+        removeNode(root, input);
+    }
+
+    public TreeNode removeNode(TreeNode treeNode, Integer input) {
+        // pointer to store the parent of the current node
+        TreeNode parent = null;
+
+        // start with the root node
+        TreeNode curr = root;
+
+        // search key in the BST and set its parent pointer
+        while (curr != null && curr.data != input)
+        {
+            // update the parent to the current node
+            parent = curr;
+
+            // if the given key is less than the current node, go to the left subtree;
+            // otherwise, go to the right subtree
+            if (input < curr.data) {
+                curr = curr.left;
+            }
+            else {
+                curr = curr.right;
+            }
+        }
+
+        // return if the key is not found in the tree
+        if (curr == null) {
+            return root;
+        }
+
+        // Case 1: node to be deleted has no children, i.e., it is a leaf node
+        if (curr.left == null && curr.right == null)
+        {
+            // if the node to be deleted is not a root node, then set its
+            // parent left/right child to null
+            if (curr != root)
+            {
+                if (parent.left == curr) {
+                    parent.left = null;
+                }
+                else {
+                    parent.right = null;
+                }
+            }
+            // if the tree has only a root node, set it to null
+            else {
+                root = null;
+            }
+        }
+
+        // Case 2: node to be deleted has two children
+        else if (curr.left != null && curr.right != null)
+        {
+            // find its inorder successor node
+            TreeNode successor = findMinNode(curr.right);
+
+            // store successor value
+            int val = successor.data;
+
+            // recursively delete the successor. Note that the successor
+            // will have at most one child (right child)
+            removeNode(root, successor.data);
+
+            // copy value of the successor to the current node
+            curr.data = val;
+        }
+
+        // Case 3: node to be deleted has only one child
+        else {
+            // choose a child node
+            TreeNode child = (curr.left != null)? curr.left: curr.right;
+
+            // if the node to be deleted is not a root node, set its parent
+            // to its child
+            if (curr != root)
+            {
+                if (curr == parent.left) {
+                    parent.left = child;
+                }
+                else {
+                    parent.right = child;
+                }
+            }
+
+            // if the node to be deleted is a root node, then set the root to the child
+            else {
+                root = child;
+            }
+        }
+
+        return root;
+    }
+
+
+    /**
+     *  BinarySearchTree의 서브 트리에서 재귀를 이용해 최대값, 최소값을 찾는 메소드
+     */
+    private TreeNode findMaxNode(TreeNode treeNode) {
+        if (treeNode.right == null)
+            return treeNode;
+        else
+            return findMaxNode(treeNode.right);
+    }
+
+    private TreeNode findMinNode(TreeNode treeNode) {
+        if (treeNode.left == null)
+            return treeNode;
+        else
+            return findMinNode(treeNode.left);
+    }
+
+
+    /**
+     *  트리를 구조를 확인할 수 있는 함수 (외부 코드 첨부)
+    */
     public void print2DUtil(TreeNode root, int space)
     {
         // Base case
@@ -142,7 +298,6 @@ public class BinarySearchTree {
         print2DUtil(root.left, space);
     }
 
-    // Wrapper over print2DUtil()
     public void print2D()
     {
         // Pass initial space count as 0

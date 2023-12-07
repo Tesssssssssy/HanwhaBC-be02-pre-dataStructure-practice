@@ -24,5 +24,8 @@ public class BinarySearchTreeExMain {
 
         bst2.print2D();
         TreePrinter.print(bst2.root);
+
+        bst.remove(20);
+        TreePrinter.print(bst.root);
     }
 }

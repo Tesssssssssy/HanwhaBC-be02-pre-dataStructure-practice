@@ -1,8 +1,6 @@
 package day02.Tree;
 
 public class TreeNode implements TreePrinter.PrintableNode {
-    // 육안으로 쉽게 트리의 구조를 확인하기 위한 TreePrinter interface implements.
-
     Integer data;
     TreeNode left;
     TreeNode right;
@@ -13,7 +11,7 @@ public class TreeNode implements TreePrinter.PrintableNode {
         this.right = null;
     }
 
-    // TreePrinter interface의 함수 implement.
+    // TreePrinter interface의 함수 override
     @Override
     public TreePrinter.PrintableNode getLeft() {
         return this.left;
@@ -29,3 +27,11 @@ public class TreeNode implements TreePrinter.PrintableNode {
         return "[" + data + "]";
     }
 }
+/*
+    data : 입력값 저장
+    left : data 보다 작은 왼쪽 자식 노드
+    right : data보다 큰 오른쪽 자식 노드
+
+    생성자
+        객체 생성 시 입력값을 data에 넣고 왼쪽, 오른쪽 자식 노드를 null로 초기화
+*/

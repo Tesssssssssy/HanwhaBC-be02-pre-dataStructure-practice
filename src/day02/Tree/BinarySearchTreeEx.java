@@ -54,6 +54,74 @@ public class BinarySearchTreeEx {
         return treeNode;
     }
 
+    public void remove(Integer input) {
+        TreeNode target = this.root;
+        TreeNode parents = null;
+
+        if (target != null) {
+            // 일단 입력값을 가진 노드를 먼저 찾기
+            while (true) {
+                if (target.data == input) {
+                    break;
+                }
+                if (input > target.data) {
+                    parents = target;
+                    target = target.right;
+                }
+                if (input < target.data) {
+                    parents = target;
+                    target = target.left;
+                }
+            }
+            // 자식이 없는 리프 노드일 떄 삭제
+            if (target.left == null && target.right == null) {
+                if (target.data > parents.data) {
+                    parents.right = null;
+                }
+                if (target.data < parents.data) {
+                    parents.left = null;
+                }
+            } else if (target.left != null && target.right == null ||
+                    target.left == null && target.right != null) {
+                if (target.data > parents.data) {
+                    parents.right = target.right;
+                    target.right = null;
+                }
+                if (target.data < parents.data) {
+                    parents.left = target.left;
+                    target.left = null;
+                }
+            } else {
+                // 왼쪽 기준으로 무한 반복을 돈다.
+                TreeNode maximum = target.left;
+                TreeNode maximumParents = target;
+                while(maximum.right != null) {
+                    maximumParents = maximum;
+                    maximum = maximum.right;
+                }
+                if(!maximumParents.equals(target)) {
+                    maximumParents.right = maximum.left;
+                }
+
+                if(!target.left.equals(maximum)) {
+                    maximum.left = target.left;
+                }
+                maximum.right = target.right;
+
+                if(parents == null) {
+                    this.root = maximum;
+                } else {
+                    if(target.data > parents.data) {
+                        parents.right = maximum;
+                    }
+                    if(target.data < parents.data) {
+                        parents.left = maximum;
+                    }
+                }
+            }
+        }
+    }
+
     void print2DUtil(TreeNode root, int space)
     {
         // Base case
