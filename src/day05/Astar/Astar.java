@@ -35,22 +35,15 @@ public class Astar {
 
         // 맵 크기 초기화
         this.mapX = map.length;
-        this.mapY = map.length;
+        this.mapY = map[0].length;
 
-        // 출발지 초기화
+        // 출발지, 도착지 초기화
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                if(map[i][j] == 1) {
+                if (map[i][j] == 1) {
                     System.out.println("x좌표 : " + j + ", y좌표 : " + i);
                     this.start = new Node(j, i);
-                }
-            }
-        }
-
-        // 도착지 초기화
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if(map[i][j] == 2) {
+                } else if (map[i][j] == 2) {
                     System.out.println("x좌표 : " + j + ", y좌표 : " + i);
                     this.goal = new Node(j, i);
                 }
@@ -83,11 +76,13 @@ public class Astar {
             if (goal.equals(minFNode)) {
                 // 최종 경로 출력
                 printPath(start);
+                return;
             }
             else {  // 그렇지 않으면
                 addAdjacentNodes(minFNode);
             }
         }
+        System.out.println("경로를 찾지 못했습니다.");
     }
 
     public void printPath(Node node) {
@@ -95,110 +90,112 @@ public class Astar {
         // 특정 노드를 하나 전달받아서
         // 부모 부모 부모 찾아가서 출발지가 나오면
         // 출발지부터 출력
+
+        List<Node> path = new ArrayList<>();
+        while (node != null) {
+            path.add(node);
+            node = node.parent;
+        }
+
+        Collections.reverse(path);
+
+        for (Node pathNode : path) {
+            System.out.println("x: " + pathNode.x + ", y: " + pathNode.y);
+        }
+    }
+
+    private boolean isValidPosition(int x, int y) {
+        return x >= 0 && x < mapX && y >= 0 && y < mapY && map[y][x] != 3;
     }
 
     // 열린 노드에 추가 시 안되게 해야!!
-    public boolean isDuplicate(Node adjacentNode) {
-        // 열린 노드에 있는 노드들을 하나씩 가져오면서 반복
-        // 가져온 노드의 x, y와 전달받은 노드의 x, y가 같으면 중복
-        for (Node openNode : openNodes) {
-            if (openNode.x == adjacentNode.x && openNode.y == adjacentNode.y) {
+    private boolean isDuplicate(Node adjacentNode) {
+        for (Node node : openNodes) {
+            if (node!= null && node.x.equals(adjacentNode.x) && node.y.equals(adjacentNode.y)) {
                 return true;
             }
         }
 
-        // 닫힌 노드에 있는 노드들도 하나씩 중복 체크
-        for (Node openNode : closedNodes) {
-            if (openNode.x == adjacentNode.x && openNode.y == adjacentNode.y) {
+        for (Node node : closedNodes) {
+            if (node!= null && node.x.equals(adjacentNode.x) && node.y.equals(adjacentNode.y)) {
                 return true;
             }
         }
+
         return false;
     }
 
 
-    public void addAdjacentNodes(Node adjacentNode) {
+    public void addAdjacentNodes(Node currentNode) {
         // 인접하는 노드를 열린 목록에 추가하는 메소드
-
         // 전달받은 노드의 x, y 좌표를 따로 저장
-        int adjacentNodeX = adjacentNode.x;
-        int adjacentNodeY = adjacentNode.y;
 
-        /* 왼위, 위, 오위, 왼, 오, 왼아, 아, 오아
-             1, 1 (왼위)      2, 1 (위)          3, 1 (오위)
-             1, 2 (왼)        2, 2 (시작)        3, 2 (오)
-             1, 3 (왼아)      2, 3 (아)          3, 3 (오아)
+        /*
+            가야하는 노드들을 배열로 만들어서 반복해서 하나씩 가게 한다.
+            인접한 좌표가 맵 크기를 넘지 않고 맵에서 장애물이 아니면
+            생성한 노드의 f, g, h를 계산 후 각 변수에 저장
         */
 
-        // 반복문 나중에 수정하자.
-        List<Node> adjacentNodes = new ArrayList<Node>();
-
-        Node temp1 = new Node(adjacentNodeX - 1, adjacentNodeY - 1);    // 왼오 -> g = 14
-        Node temp2 = new Node(adjacentNodeX - 1, adjacentNodeY);           // 왼 -> g = 10
-        Node temp3 = new Node(adjacentNodeX - 1, adjacentNodeY + 1);    // 왼아 -> g = 14
-        Node temp4 = new Node(adjacentNodeX, adjacentNodeY - 1);           // 위 -> g = 10
-        Node temp5 = new Node(adjacentNodeX, adjacentNodeY + 1);           // 아 -> g = 10
-        Node temp6 = new Node(adjacentNodeX + 1, adjacentNodeY - 1);    // 오위 -> g = 14
-        Node temp7 = new Node(adjacentNodeX + 1, adjacentNodeY);           // 오 -> g = 10
-        Node temp8 = new Node(adjacentNodeX + 1, adjacentNodeY + 1);    // 오아 -> g = 14
-
-        adjacentNodes.add(temp1);
-        adjacentNodes.add(temp2);
-        adjacentNodes.add(temp3);
-        adjacentNodes.add(temp4);
-        adjacentNodes.add(temp5);
-        adjacentNodes.add(temp6);
-        adjacentNodes.add(temp7);
-        adjacentNodes.add(temp8);
-
-        // 가야하는 노드들을 배열로 만들어서 반복해서 하나씩 가게 한다.
-        // 인접한 좌표가 맵 크기를 넘지 않고 맵에서 장애물이 아니면
-        // 생성한 노드의 f, g, h를 계산 후 각 변수에 저장
-        for (Node node : adjacentNodes) {
-            int cnt = 0;
-            if (node.x < mapX && node.y < mapY && !map.equals(3)) {
-                ++cnt;
-               /*
-                        왼오 -> g = 14
-                        왼 -> g = 10
-                        왼아 -> g = 14
-                        위 -> g = 10
-                        아 -> g = 10
-                        오위 -> g = 14
-                        오 -> g = 10
-                        오아 -> g = 14
-
-                     1, 1 (왼위)      2, 1 (위)          3, 1 (오위)
-                     1, 2 (왼)        2, 2 (시작)        3, 2 (오)
-                     1, 3 (왼아)      2, 3 (아)          3, 3 (오아)
-
-                     부모 노드 만들어야 하는데 어디에서..?
-
-
-                */
-                /*
-                    node.g = cnt * DEFAULT_COST; ->
-                    or
-                    node.g = cnt * DEFAULT_DIAGONAL_COST;
-                    node.h = ;
-                    node.f = node.g + node.h;
-
-                */
-            }
-        }
-        // 새로운 노드 생성 (좌표, 부모 등을 전달해서)
-        Node newNode = new Node();
-
-        // 중복 체크 isDuplicate() 실행해서 결과 따로 저장
-        boolean isDuplicate = isDuplicate(adjacentNode);
 
         // 만약 isDuplicate 실행 결과 false이면
         // 생성한 노드를 열린 목록에 넣는다. (중복이 아니라는 거니까)
-        if (isDuplicate == false) {
-            openNodes.add(newNode);
-        }
-
         // 넣고 정렬 (f값을 기준으로 오름차순 정렬)
 
+        int currentX = currentNode.x;
+        int currentY = currentNode.y;
+
+        if (currentNode == null) {
+            System.out.println("Error: currentNode is null");
+            return;
+        }
+
+        int[] adjacentX = {currentX - 1, currentX, currentX + 1, currentX};
+        int[] adjacentY = {currentY - 1, currentY, currentY + 1, currentY};
+
+        for (int i = 0; i < 4; i++) {
+            int nextX = adjacentX[i];
+            int nextY = adjacentY[i];
+
+            if (nextX < 0 || nextX >= mapX || nextY < 0 || nextY >= mapY) {
+                continue;
+            }
+
+            if (map[nextY][nextX] != 0) {
+                continue;
+            }
+
+            Node adjacentNode = new Node(nextX, nextY);
+            adjacentNode.g = currentNode.g + DEFAULT_COST;
+
+            if (i == 0 || i == 3) {
+                adjacentNode.g += DEFAULT_COST;
+            } else if (i == 1 || i == 2) {
+                adjacentNode.g += DEFAULT_DIAGONAL_COST;
+            }
+
+            if (adjacentNode == null) {
+                System.out.println("Error: adjacentNode is null");
+                continue;
+            }
+
+            adjacentNode.h = calculateHeuristicValue(nextX, nextY);
+            adjacentNode.f = adjacentNode.g + adjacentNode.h;
+            adjacentNode.parent = currentNode;
+
+            if (!isDuplicate(adjacentNode)) {
+                openNodes.add(adjacentNode);
+            }
+        }
+    }
+
+    private int calculateHeuristicValue(int nextX, int nextY) {
+        if (goal == null || goal.x == null || goal.y == null) {
+            throw new NullPointerException("Goal node or its coordinates are not initialized.");
+        }
+
+        int dx = goal.x - nextX;
+        int dy = goal.y - nextY;
+
+        return Math.abs(dx) + Math.abs(dy);
     }
 }

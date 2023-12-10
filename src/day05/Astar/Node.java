@@ -10,7 +10,7 @@ public class Node implements Comparable<Node> {
     Integer y;
 
     // 노드를 기억할 수 있는 부모 변수 추가해야.
-    Node parents;
+    Node parent;
 
     public Node(Integer x, Integer y) {
         this.x = x;
@@ -21,14 +21,17 @@ public class Node implements Comparable<Node> {
 
     }
 
-    public Node(Integer x, Integer y, Node parents) {
+    public Node(Integer x, Integer y, Node parent) {
         this.x = x;
         this.y = y;
-        this.parents = parents;
+        this.parent = parent;
     }
 
     @Override
     public int compareTo(Node node) {
-        return (this.f > node.f) ? 1 : -1;
+        if (this.f == null || node.f == null) {
+            throw new NullPointerException("Node's f value is null.");
+        }
+        return this.f.compareTo(node.f);
     }
 }
