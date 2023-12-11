@@ -1,4 +1,4 @@
-package day05.Astar;
+package day05.AstarMyVer;
 
 public class AstarEx {
     final Integer DEFAULT_COST = 10;

@@ -1,4 +1,4 @@
-package day05.Astar;
+package day05.AstarMyVer;
 
 public class Node implements Comparable<Node> {
     // 노드에 뭘 기억해놓고 있어야 하는지 생각하자.

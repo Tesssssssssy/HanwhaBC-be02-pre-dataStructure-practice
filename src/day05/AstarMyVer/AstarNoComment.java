@@ -1,4 +1,4 @@
-package day05.Astar;
+package day05.AstarMyVer;
 
 import java.util.ArrayList;
 import java.util.Collections;

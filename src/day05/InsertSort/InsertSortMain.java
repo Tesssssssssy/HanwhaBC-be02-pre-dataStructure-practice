@@ -4,7 +4,7 @@ public class InsertSortMain {
     public static void main(String[] args) {
         InsertSort insertSort = new InsertSort();
 
-        int[] arr1 = new int[]{10, 1, 5, 38, 22, 2, 7, 16};
+        int[] arr1 = new int[]{5, 4, 3, 1, 2};
         System.out.println("<삽입 정렬 전>");
         System.out.print("arr1: ");
         for(int i=0; i<arr1.length; i++) {

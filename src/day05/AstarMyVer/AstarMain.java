@@ -1,4 +1,4 @@
-package day05.Astar;
+package day05.AstarMyVer;
 
 public class AstarMain {
     public static void main(String[] args) {
@@ -17,15 +17,15 @@ public class AstarMain {
 
         Astar astar = new Astar(map);
 
-        for (int i = 0; i < astar.openNodes.size(); i++) {
-            System.out.println(astar.openNodes.get(i).x +", " + astar.openNodes.get(i).y);
+        for (int i = 0; i < astar.openList.size(); i++) {
+            System.out.println(astar.openList.get(i).x +", " + astar.openList.get(i).y);
         }
 
         astar.addAdjacentNodes(astar.start);
         System.out.println();
 
-        for (int i = 0; i < astar.openNodes.size(); i++) {
-            System.out.println(astar.openNodes.get(i).x +", " + astar.openNodes.get(i).y);
+        for (int i = 0; i < astar.openList.size(); i++) {
+            System.out.println(astar.openList.get(i).x +", " + astar.openList.get(i).y);
         }
 
         astar.findPath();
