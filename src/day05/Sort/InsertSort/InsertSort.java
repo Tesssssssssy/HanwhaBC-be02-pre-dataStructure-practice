@@ -1,4 +1,4 @@
-package day05.InsertSort;
+package day05.Sort.InsertSort;
 
 public class InsertSort {
     public void insertSort(int[] arr) {

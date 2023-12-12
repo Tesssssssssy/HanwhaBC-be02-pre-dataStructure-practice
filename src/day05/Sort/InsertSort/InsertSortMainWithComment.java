@@ -1,4 +1,4 @@
-package day05.InsertSort;
+package day05.Sort.InsertSort;
 
 public class InsertSortMainWithComment {
     public static void main(String[] args) {

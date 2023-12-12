@@ -1,4 +1,4 @@
-package day05.ShellSort;
+package day05.Sort.ShellSort;
 
 public class ShellSort {
     public void incInsertionSort (int[] list, int first, int gap) {

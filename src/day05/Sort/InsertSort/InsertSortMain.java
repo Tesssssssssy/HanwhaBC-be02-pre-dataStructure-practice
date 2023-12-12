@@ -1,4 +1,4 @@
-package day05.InsertSort;
+package day05.Sort.InsertSort;
 
 public class InsertSortMain {
     public static void main(String[] args) {
@@ -22,5 +22,18 @@ public class InsertSortMain {
             System.out.print(arr1[i] + " " );
         }
         System.out.println();
+
+
+        Integer[] arr = new Integer[10];
+        System.out.print("정렬 전 : ");
+        for (int i = 0; i < 10; i++) {
+            Integer num = (int)(Math.random()*100) + 1;
+            arr[i] = num;
+            System.out.print(num + " ");
+        }
+        System.out.println();
+
+        InsertSortEx insertSortEx = new InsertSortEx();
+        insertSortEx.sort(arr.clone());
     }
 }
