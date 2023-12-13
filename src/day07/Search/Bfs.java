@@ -1,6 +1,5 @@
 package day07.Search;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -40,6 +39,7 @@ public class Bfs {
         }
         System.out.println();
     }
+
     /*
         bfs.search(lists, 1);
 
