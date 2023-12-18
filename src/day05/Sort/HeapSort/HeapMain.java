@@ -29,6 +29,8 @@ public class HeapMain {
             정렬된 배열 : [5, 7, 8, 12, 13, 28, 39, 43, 49, 58, 87]
     */
 
+        System.out.println("\n");
+
         Integer[] arr2 = new Integer[10];
         System.out.print("정렬 전 : ");
         for (int i = 0; i < 10; i++) {
@@ -41,4 +43,8 @@ public class HeapMain {
         HeapSortEx heapSortEx = new HeapSortEx();
         heapSortEx.heapSort(arr2.clone());
     }
+    /*
+        정렬 전 : 75 53 78 62 68 78 87 50 5 24
+        힙 정렬 : 5 24 50 53 62 68 75 78 78 87
+    */
 }

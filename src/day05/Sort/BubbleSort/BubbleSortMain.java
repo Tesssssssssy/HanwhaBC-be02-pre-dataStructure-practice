@@ -17,6 +17,8 @@ public class BubbleSortMain {
         최종 배열 : 0 1 2 3 5 7 8
     */
 
+        System.out.println("\n");
+
         Integer[] arr = new Integer[10];
         System.out.print("정렬 전 : ");
         for (int i = 0; i < 10; i++) {
@@ -29,4 +31,9 @@ public class BubbleSortMain {
         BubbleSortEx bubbleSortEx = new BubbleSortEx();
         bubbleSortEx.sort(arr.clone());
     }
+
+    /*
+        정렬 전 : 66 42 39 37 92 58 25 69 15 77
+        거품 정렬 : 15 25 37 39 42 58 66 69 77 92
+    */
 }
