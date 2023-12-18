@@ -1,23 +1,20 @@
 package day05.AstarMyVer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Astar {
     final Integer DEFAULT_COST = 10;
     final Integer DEFAULT_DIAGONAL_COST = 14;
 
-
     // 맵의 크기 저장 변수
     Integer rowSize;
     Integer colSize;
 
-
     // 초기화할 때 맵 정보를 전달 받아서 출발지와 목적지의 좌표를 변수에 저장
     Integer[][] map;
-
     Node start;
-
     Node goal;
 
     // 열린 목록 저장할 변수
@@ -44,6 +41,7 @@ public class Astar {
 
                 if (map[i][j] == 1) {
                     this.start = new Node(j, i);
+                    System.out.println("시작점: " + start.x + ", " + start.y);
                 }
             }
         }
@@ -53,6 +51,7 @@ public class Astar {
 
                 if (map[i][j] == 2) {
                     this.goal = new Node(j, i);
+                    System.out.println("도착점: " + goal.x + ", " + goal.y);
                 }
             }
         }
@@ -64,7 +63,7 @@ public class Astar {
 
         // 열린 목록이 비어 있지 않으면 반복, 리스트가 비어있는지 아닌지 확인은 리스트변수.isEmpty()
         while (openList.isEmpty() != true) {
-//            열린 목록에서 제일 처음 노드를 가져온다(가져온 노드는 목록에서 삭제)
+//        열린 목록에서 제일 처음 노드를 가져온다(가져온 노드는 목록에서 삭제)
             Node node = openList.get(0);
             openList.remove(0);
 
@@ -75,9 +74,9 @@ public class Astar {
             if (goal.x == node.x && goal.y == node.y) {
 //                  최종 경로 출력
                 List<Node> path = new ArrayList<>();
-                while (node.parent != null) {
+                while (node.parents != null) {
                     path.add(0, node);
-                    node = node.parent;
+                    node = node.parents;
                 }
 
                 for (int i = 0; i < path.size(); i++) {
@@ -91,6 +90,7 @@ public class Astar {
                 this.addAdjacentNodes(node);
             }
         }
+        System.out.println();
     }
 
     public Boolean isDuplicate(Node adjacentNode) {
@@ -150,7 +150,26 @@ public class Astar {
                 Integer f;
                 f = g + h;
 
+                // 새로운 노드 생성(전달해줄거 전달해서 생성)
+                Node adjacentNode = new Node(xArr[i], yArr[i], f, g, h, currentNode);
 
+                // isDuplicate 메소드 실행해서 결과를 저장
+                Boolean isDuplicate = isDuplicate(adjacentNode);
+
+                // 만약에 isDuplicate 메소드 실행 결과가 거짓이면
+                if(!isDuplicate) {
+                    //      생성한 노드를 열린 목록에 넣는다
+                    openList.add(adjacentNode);
+
+                    //      F 값을 기준으로 정렬 오름차순 정렬
+                    for (int j = 0; j < openList.size(); j++) {
+                        for (int k = 1; k < openList.size(); k++) {
+                            if (openList.get(j).f > openList.get(k).f) {
+                                Collections.swap(openList, j, k);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

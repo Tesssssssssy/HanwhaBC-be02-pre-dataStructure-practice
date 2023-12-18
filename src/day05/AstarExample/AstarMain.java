@@ -16,7 +16,12 @@ public class AstarMain {
         };
 
         Astar astar = new Astar(map);
-
         astar.findPath();
     }
+    /*
+        [5,5]
+        [6,6]
+        [7,5]
+        [8,4]
+    */
 }

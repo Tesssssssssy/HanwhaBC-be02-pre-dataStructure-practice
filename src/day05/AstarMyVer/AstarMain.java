@@ -16,18 +16,32 @@ public class AstarMain {
         };
 
         Astar astar = new Astar(map);
-
-        for (int i = 0; i < astar.openList.size(); i++) {
-            System.out.println(astar.openList.get(i).x +", " + astar.openList.get(i).y);
-        }
-
-        astar.addAdjacentNodes(astar.start);
-        System.out.println();
-
-        for (int i = 0; i < astar.openList.size(); i++) {
-            System.out.println(astar.openList.get(i).x +", " + astar.openList.get(i).y);
-        }
-
         astar.findPath();
+        /*
+            시작점: 4, 4
+            도착점: 8, 4
+            [5,3][6,2][7,3][8,4]
+        */
+
+        Integer[][] map2 = {
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,1,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,3,0,0,0},
+                {0,0,0,0,0,0,3,0,0,0},
+                {0,0,0,0,0,0,3,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,2,0},
+                {0,0,0,0,0,0,0,0,0,0}
+        };
+
+        Astar astar2 = new Astar(map2);
+        astar2.findPath();
     }
+    /*
+        시작점: 1, 1
+        도착점: 8, 8
+        [1,2][0,3][1,4][0,5][1,6][0,7][1,8][2,9][3,8][4,7][5,6][6,7][7,6][8,5][9,6][9,7][8,8]
+    */
 }
